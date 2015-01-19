@@ -1,0 +1,29 @@
+{
+  "name": "webservices",
+  "version": "1.0.0",
+  "description": "Web server that can spawn services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cheminfo/node-webservices.git"
+  },
+  "keywords": [
+    "webservice"
+  ],
+  "author": "Michaël Zasso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cheminfo/node-webservices/issues"
+  },
+  "homepage": "https://github.com/cheminfo/node-webservices",
+  "dependencies": {
+    "co": "^4.1.0",
+    "koa": "^0.15.0",
+    "koa-body": "^0.4.0",
+    "koa-cors": "0.0.14",
+    "mz": "^1.2.1"
+  }
+}
