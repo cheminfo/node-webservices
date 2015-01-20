@@ -3,6 +3,7 @@ var body = require('koa-body');
 var cors = require('koa-cors');
 var child_process = require('child_process');
 var fs = require('mz/fs');
+var nativeFs = require('fs');
 var pathLib = require('path');
 
 var config = require('./config.json');
@@ -86,7 +87,20 @@ app.use(function*() {
 
         try {
             result = yield prom;
-            this.body = result;
+            if (!result.__type) {
+                this.body = result;
+            } else {
+                switch(result.__type) {
+                    case 'file':
+                        this.set('Content-Type', result.content_type || 'application/octet-stream');
+                        this.set('Content-Disposition', 'attachment; filename="'+result.filename+'"');
+                        if (result.content) {
+                            this.body = result.content;
+                        } else if (result.file) {
+                            this.body = nativeFs.createReadStream(result.file);
+                        }
+                }
+            }
         } catch (e) {
             this.status = 500;
             this.body = e.message;
