@@ -21,8 +21,6 @@ app.use(body());
 
 app.use(function*() {
 
-    console.log('Access path: ' + this.path);
-
     var path = this.path.split('/');
     var service = path[1];
 
@@ -87,23 +85,32 @@ app.use(function*() {
 
         try {
             result = yield prom;
-            if (!result.__type) {
+            if (typeof result === 'string') {
                 this.body = result;
-            } else {
-                switch(result.__type) {
-                    case 'file':
-                        this.set('Content-Type', result.content_type || 'application/octet-stream');
-                        this.set('Content-Disposition', 'attachment; filename="'+result.filename+'"');
-                        if (result.content) {
-                            this.body = result.content;
-                        } else if (result.file) {
-                            this.body = nativeFs.createReadStream(result.file);
-                        }
+            } else if (result) {
+                if (result.content) {
+                    this.body = result.content;
+                } else if (result.file) {
+                    this.body = nativeFs.createReadStream(result.file);
+                }
+                if (result.contenttype || result.mimetype) {
+                    this.set('Content-Type', result.contenttype || result.mimetype);
+                }
+                if (result.filename) {
+                    this.set('Content-Disposition', 'attachment; filename="' + result.filename + '"');
+                }
+                if (result.status) {
+                    this.status = result.status;
+                }
+                if (result.headers) {
+                    for (var j in result.headers) {
+                        this.set(j, result.headers[j]);
+                    }
                 }
             }
         } catch (e) {
             this.status = 500;
-            this.body = e.message;
+            this.body = 'INTERNAL SERVER ERROR\n\n' + e.message + '\n\n' + e.stack;
         }
 
     } else {
