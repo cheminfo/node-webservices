@@ -38,7 +38,7 @@ if (program.port) config.port = parseInt(program.port);
 
 var app = koa();
 
-var services_dir = config.services_dir;
+var services_dir = config.directory;
 
 var loaded_services = {};
 var pending_messages = {};
