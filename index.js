@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+'use strict';
+
 var koa = require('koa');
 var body = require('koa-body');
 var cors = require('koa-cors');
@@ -5,8 +9,32 @@ var child_process = require('child_process');
 var fs = require('mz/fs');
 var nativeFs = require('fs');
 var pathLib = require('path');
+var pkg = require('./package.json');
 
-var config = require('./config.json');
+var program = require('commander');
+program
+    .version(pkg.version)
+    .option('-d --directory [path]', 'Service directory')
+    .option('-p --port [port]', 'HTTP port')
+    .option('-c --config [path]', 'Config file')
+    .parse(process.argv);
+
+var config = {
+    directory: './services',
+    port: 8080
+};
+if (program.config) {
+    try {
+        config = require(pathLib.resolve(program.config));
+    } catch (e) {
+        console.error('Could not parse config file');
+        console.error(e);
+        process.exit(1);
+    }
+}
+
+if (program.directory) config.directory = program.directory;
+if (program.port) config.port = parseInt(program.port);
 
 var app = koa();
 
