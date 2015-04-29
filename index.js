@@ -138,7 +138,7 @@ app.use(function*() {
             }
         } catch (e) {
             this.status = 500;
-            this.body = 'INTERNAL SERVER ERROR\n\n' + e.message + '\n\n' + e.stack;
+            this.body = 'INTERNAL SERVER ERROR\n\n' + e.message;
         }
 
     } else {
@@ -160,6 +160,9 @@ function prepareService(thePath, name) {
     loaded_services[name] = serviceInstance;
 
     serviceInstance.on('message', handleMessage);
+    serviceInstance.on('exit', function () {
+        loaded_services[name] = null;
+    });
 
     return serviceInstance;
 }
