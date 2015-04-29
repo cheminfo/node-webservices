@@ -20,7 +20,7 @@ program
     .parse(process.argv);
 
 var config = {
-    directory: './services',
+    directory: './examples',
     port: 8080
 };
 if (program.config) {
