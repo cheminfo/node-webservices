@@ -105,7 +105,8 @@ app.use(function*() {
                 url: host + service + '/',
                 path: path.slice(2),
                 query: this.query,
-                body: this.request.body
+                body: this.request.body,
+                cookie: this.request.header.cookie
             }
         });
 
