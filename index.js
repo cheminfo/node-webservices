@@ -43,7 +43,13 @@ var services_dir = config.directory;
 var loaded_services = {};
 var pending_messages = {};
 
-app.use(cors());
+var options = {
+        origin:true,
+        credentials:true,
+        expose:true
+}
+
+app.use(cors(options));
 
 app.use(body());
 
