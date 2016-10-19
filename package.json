@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/cheminfo/node-webservices",
   "dependencies": {
-    "co": "4.5.2",
-    "commander": "2.8.1",
-    "koa": "0.19.1",
-    "koa-body": "1.2.1",
-    "koa-cors": "0.0.14",
-    "mz": "1.3.0"
+    "co": "^4.6.0",
+    "commander": "^2.9.0",
+    "koa": "^1.2.4",
+    "koa-body": "^1.6.0",
+    "koa-cors": "^0.0.16",
+    "mz": "^2.4.0"
   }
 }
