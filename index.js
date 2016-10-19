@@ -127,6 +127,10 @@ app.use(function*() {
                     this.body = result.content;
                 } else if (result.file) {
                     this.body = nativeFs.createReadStream(result.file);
+                } else {
+                    this.body = 'Missing content';
+                    this.status = 500;
+                    return;
                 }
                 if (result.contenttype || result.mimetype) {
                     this.set('Content-Type', result.contenttype || result.mimetype);
