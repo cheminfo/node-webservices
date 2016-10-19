@@ -128,7 +128,7 @@ app.use(function*() {
                 } else if (result.file) {
                     this.body = nativeFs.createReadStream(result.file);
                 } else {
-                    this.body = 'Missing content';
+                    this.body = 'Missing content.\nIf the result is an object, wrap it like this:\n\nresolve({content: result});';
                     this.status = 500;
                     return;
                 }
