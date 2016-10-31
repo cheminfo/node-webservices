@@ -51,7 +51,7 @@ var options = {
 
 app.use(cors(options));
 
-app.use(body());
+app.use(body({jsonLimit: '10mb', textLimit: '10mb'}));
 
 app.use(function*() {
 
