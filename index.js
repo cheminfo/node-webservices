@@ -2,16 +2,16 @@
 
 'use strict';
 
-var koa = require('koa');
-var body = require('koa-body');
-var cors = require('koa-cors');
-var child_process = require('child_process');
-var fs = require('mz/fs');
-var nativeFs = require('fs');
-var pathLib = require('path');
-var pkg = require('./package.json');
+const koa = require('koa');
+const body = require('koa-body');
+const cors = require('koa-cors');
+const child_process = require('child_process');
+const fs = require('mz/fs');
+const nativeFs = require('fs');
+const pathLib = require('path');
+const pkg = require('./package.json');
 
-var program = require('commander');
+const program = require('commander');
 program
     .version(pkg.version)
     .option('-d --directory [path]', 'Service directory')
@@ -19,7 +19,7 @@ program
     .option('-c --config [path]', 'Config file')
     .parse(process.argv);
 
-var config = {
+let config = {
     directory: './examples',
     port: 8080
 };
@@ -36,18 +36,18 @@ if (program.config) {
 if (program.directory) config.directory = program.directory;
 if (program.port) config.port = parseInt(program.port);
 
-var app = koa();
+const app = koa();
 
-var services_dir = config.directory;
+const services_dir = config.directory;
 
-var loaded_services = {};
-var pending_messages = {};
+const loaded_services = new Map();
+const pending_messages = new Map();
 
 var options = {
         origin:true,
         credentials:true,
         expose:true
-}
+};
 
 app.use(cors(options));
 
@@ -59,27 +59,26 @@ app.use(function*() {
     var service = path[1];
 
     if (service) {
-
         if (service === '_reload') {
             if (path[2]) {
-                var srv = loaded_services[path[2]];
+                var srv = loaded_services.get(path[2]);
                 if (srv) {
                     srv.kill();
-                    delete loaded_services[path[2]];
+                    loaded_services.delete(path[2]);
                     return this.body = 'Service ' + path[2] + ' reloaded';
                 } else {
                     this.throw(400, 'Service ' + path[2] + ' not loaded.');
                 }
             } else {
-                for (var i in loaded_services) {
-                    loaded_services[i].kill();
-                    delete loaded_services[i];
+                for (var entry of loaded_services.entries()) {
+                    if (entry[1]) entry[1].kill();
+                    loaded_services.delete(entry[0]);
                 }
                 return this.body = 'All services reloaded';
             }
         }
 
-        var serviceInstance = loaded_services[service];
+        var serviceInstance = loaded_services.get(service);
 
         if (!serviceInstance) {
 
@@ -93,13 +92,12 @@ app.use(function*() {
         }
 
         var id = newId();
-        var prom = new Promise(function (resolve, reject) {
-
-            pending_messages[id] = {
+        var prom = new Promise((resolve, reject) => {
+            pending_messages.set(id, {
                 id: id,
                 resolve: resolve,
                 reject: reject
-            };
+            });
 
         });
 
@@ -161,32 +159,32 @@ app.use(function*() {
 app.listen(config.port || 3000);
 
 function prepareService(thePath, name) {
-
     var serviceInstance = child_process.fork(pathLib.join(__dirname, 'service.js'), {
         env: {
             WEBSERVICE_DIR: pathLib.resolve(thePath)
         }
     });
 
-    loaded_services[name] = serviceInstance;
+    loaded_services.set(name, serviceInstance);
 
     serviceInstance.on('message', handleMessage);
     serviceInstance.on('exit', function () {
-        loaded_services[name] = null;
+        loaded_services.delete(name);
     });
 
     return serviceInstance;
 }
 
 function handleMessage(message) {
-    if (message.id && pending_messages[message.id]) {
+    if (message.id && pending_messages.has(message.id)) {
         if (message.hasOwnProperty('value')) {
-            pending_messages[message.id].resolve(message.value);
+            pending_messages.get(message.id).resolve(message.value);
         } else {
-            pending_messages[message.id].reject(Error(message.error));
+            pending_messages.get(message.id).reject(Error(message.error));
         }
-
-        delete pending_messages[message.id];
+        pending_messages.delete(message.id);
+    } else {
+        console.error(`No pending message for id ${message.id}`);
     }
 }
 
