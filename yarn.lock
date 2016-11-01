@@ -15,10 +15,6 @@ bytes@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.4.0.tgz#7d97196f9d5baf7f6935e25985549edd2a6c2339"
 
-co, co@^4.0.2, co@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
-
 co-body@*:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/co-body/-/co-body-4.2.0.tgz#74df20fa73262125dc45482af04e342ea8db3515"
@@ -28,7 +24,11 @@ co-body@*:
     raw-body "~2.1.2"
     type-is "~1.6.6"
 
-commander:
+co@^4.0.2, co@^4.4.0, co@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
+
+commander@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -144,7 +144,27 @@ keygrip@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.1.tgz#b02fa4816eef21a8c4b35ca9e52921ffc89a30e9"
 
-koa:
+koa-body@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/koa-body/-/koa-body-1.6.0.tgz#2e44d7c9ee1b55e2a995c32145cb874e4dbe29ae"
+  dependencies:
+    co-body "*"
+    extend "1.3.0"
+    formidable "1.0.17"
+
+koa-compose@^2.3.0:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-2.5.1.tgz#726cfb17694de5cb9fbf03c0adf172303f83f156"
+
+koa-cors@^0.0.16:
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/koa-cors/-/koa-cors-0.0.16.tgz#98107993a7909e34c042986c5ec6156d77f3432e"
+
+koa-is-json@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/koa-is-json/-/koa-is-json-1.0.0.tgz#273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
+
+koa@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/koa/-/koa-1.2.4.tgz#6ef6d17a7bea8ec778a8572b55a0d0562e488654"
   dependencies:
@@ -172,26 +192,6 @@ koa:
     type-is "^1.5.5"
     vary "^1.0.0"
 
-koa-body:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/koa-body/-/koa-body-1.6.0.tgz#2e44d7c9ee1b55e2a995c32145cb874e4dbe29ae"
-  dependencies:
-    co-body "*"
-    extend "1.3.0"
-    formidable "1.0.17"
-
-koa-compose@^2.3.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-2.4.0.tgz#7083dff3597647a6cc2b16f937f8726f4a230adc"
-
-koa-cors:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/koa-cors/-/koa-cors-0.0.16.tgz#98107993a7909e34c042986c5ec6156d77f3432e"
-
-koa-is-json@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/koa-is-json/-/koa-is-json-1.0.0.tgz#273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
-
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -210,7 +210,7 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
-mz:
+mz@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.4.0.tgz#987ba9624d89395388c37cb4741e2caf4dd13b1a"
   dependencies:
